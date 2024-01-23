@@ -283,7 +283,7 @@ fn play_round(deck: &mut Vec<u8>, initial_player_balance: i32, initial_player_be
                             };
                             deal_from_deck(deck, &mut new_hand);
                             new_hand.avaiable_actions =
-                                get_player_actions(player_working_balance, &mut new_hand);
+                                get_player_actions(player_working_balance, &new_hand);
                             player.hands.push(new_hand);
                         }
                     }
@@ -439,7 +439,7 @@ fn shuffle_new_deck(deck: &mut Vec<u8>) {
 
 fn print_hands(dealer_hand: &Vec<u8>, player: &Player, hide_first_dealer_card: bool) {
     print_hand_legacy("Dealer", dealer_hand, hide_first_dealer_card);
-    let first_incomplete_hand_index = get_first_incomplete_hand_index(&player);
+    let first_incomplete_hand_index = get_first_incomplete_hand_index(player);
     if player.hands.len() > 1 {
         for i in 0..player.hands.len() {
             let needs_active_marker = match first_incomplete_hand_index {
@@ -469,7 +469,7 @@ fn print_hand(player_name: &str, hand: &PlayerHand, display_active_marker: bool)
     hand_string.push(']');
 
     if display_active_marker {
-        hand_string.push_str("*");
+        hand_string.push('*');
     }
 
     println!("{}: {}", player_name, hand_string);
