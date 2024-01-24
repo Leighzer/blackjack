@@ -4,7 +4,6 @@ use std::cmp::Ordering;
 use std::fs::File;
 use std::io::stdin;
 use std::io::BufReader;
-use std::io::Read;
 use std::path::PathBuf;
 use std::time::Duration;
 
@@ -84,11 +83,7 @@ fn main() {
 
         if player_profile.balance <= 0 {
             println!("You are broke. You have been kicked out of the casino. Press enter to exit.");
-            let mut buf = String::new();
-            stdin()
-                .read_line(&mut buf)
-                .expect("Error: failed to read input from stdin.");
-            std::process::exit(0);
+            is_game_running = false;
         }
     }
 }
