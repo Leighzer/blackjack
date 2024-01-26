@@ -1,13 +1,16 @@
+mod enums;
+mod models;
+
+use enums::PlayerAction;
+use models::*;
+
 use rand::seq::SliceRandom;
-use serde::{Deserialize, Serialize};
 use std::cmp::Ordering;
 use std::fs::File;
 use std::io::stdin;
 use std::io::BufReader;
 use std::path::PathBuf;
 use std::time::Duration;
-
-// TODO bug fixes and clean up messaging/outputs - getting there is pretty good now
 
 // Cards
 // 1(or 11) 2, 3, 4, 5, 6, 7, 8, 9, 10, J(10), Q(10), K(10)
@@ -446,7 +449,7 @@ fn print_hands(dealer_hand: &Vec<u8>, player: &Player, hide_first_dealer_card: b
                 Some(val) => i == val,
                 None => false,
             };
-            
+
             print_hand(
                 format!("Player hand {}", i + 1).as_str(),
                 &player.hands[i],
@@ -548,14 +551,6 @@ fn print_player_actions(player_actions: &[PlayerAction]) {
     println!("{}", player_actions_string_output)
 }
 
-#[derive(Debug, PartialEq)]
-enum PlayerAction {
-    Hit,
-    Stay,
-    DoubleDown,
-    Split,
-}
-
 fn get_player_profile_path_buf() -> PathBuf {
     let exe_path =
         std::env::current_exe().expect("Error: Failed to get the current executable path.");
@@ -627,25 +622,6 @@ fn get_hand_sum_legacy(cards: &[u8]) -> u8 {
     let hand_value = min_sum + (ace_adjustment * 10);
 
     hand_value
-}
-
-#[derive(Debug, Serialize, Deserialize)]
-struct PlayerProfile {
-    pub balance: i32,
-}
-
-struct Player {
-    pub hands: Vec<PlayerHand>,
-}
-
-struct PlayerHand {
-    pub cards: Vec<u8>,
-    pub bet: i32,
-    pub payout: Option<i32>,
-    pub is_complete_taking_actions: bool,
-    pub avaiable_actions: Vec<PlayerAction>,
-    pub previous_actions_taken: Vec<PlayerAction>,
-    pub is_starting_hand: bool,
 }
 
 #[test]
